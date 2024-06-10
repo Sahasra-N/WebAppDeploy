@@ -1,0 +1,44 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Terraform
+  displayName: 'Terraform'
+  jobs:
+  - job: TerraformJob
+    displayName: 'Run Terraform'
+    steps:
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
+      displayName: 'Install Terraform 1.8.5'
+      inputs:
+        terraformVersion: 1.8.5
+    
+    - script: |
+        terraform --version
+      displayName: 'Check Terraform version'
+
+
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
+      displayName: 'Terraform : aws init'
+      inputs:
+        provider: aws
+        backendServiceAWS: AWSServiceConnection
+        backendAWSBucketName: 'sahasra-terraform-state'
+        backendAWSKey: terraform.tfstate
+
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
+      displayName: 'Terraform : plan'
+      inputs:
+        provider: aws
+        command: plan
+        environmentServiceNameAWS: AWSServiceConnection
+
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
+      displayName: 'Terraform : apply'
+      inputs:
+        provider: aws
+        command: apply
+        environmentServiceNameAWS: AWSServiceConnection
