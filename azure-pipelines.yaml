@@ -28,6 +28,7 @@ stages:
         backendServiceAWS: AWSServiceConnection
         backendAWSBucketName: 'sahasra-terraform-state'
         backendAWSKey: terraform.tfstate
+        workingDirectory: terraform
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
       displayName: 'Terraform : plan'
@@ -35,6 +36,7 @@ stages:
         provider: aws
         command: plan
         environmentServiceNameAWS: AWSServiceConnection
+        workingDirectory: terraform
 
 
   - job: ManualApproval
@@ -70,6 +72,7 @@ stages:
         backendServiceAWS: AWSServiceConnection
         backendAWSBucketName: 'sahasra-terraform-state'
         backendAWSKey: terraform.tfstate
+        workingDirectory: terraform
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
       displayName: 'Terraform : apply'
@@ -77,3 +80,4 @@ stages:
         provider: aws
         command: apply
         environmentServiceNameAWS: AWSServiceConnection
+        workingDirectory: terraform
