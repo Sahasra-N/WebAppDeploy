@@ -40,7 +40,9 @@ stages:
 
 
   - job: ManualApproval
+    dependsOn: TerraformPlan
     displayName: 'Approval Job'
+    
     pool: server
     steps:
     - task: manualvalidation@0
