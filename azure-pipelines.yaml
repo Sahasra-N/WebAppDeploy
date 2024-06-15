@@ -17,17 +17,17 @@ stages:
       vmImage: 'ubuntu-latest'
 
     steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.x'
-        addToPath: true
+    # - task: UsePythonVersion@0
+    #   inputs:
+    #     versionSpec: '3.x'
+    #     addToPath: true
 
-    - script: |
-        pip install awscli
-      displayName: 'Install AWS CLI'
+    # - script: |
+    #     pip install awscli
+    #   displayName: 'Install AWS CLI'
 
-    - task: DockerInstaller@0
-      displayName: 'Install Docker 17.09.0-ce'
+    # - task: DockerInstaller@0
+    #   displayName: 'Install Docker 17.09.0-ce'
 
     # Docker v2
     # Build or push Docker images, login or logout, start or stop containers, or run a Docker command.
@@ -43,11 +43,9 @@ stages:
       displayName: 'Push Image: '
       inputs:
         awsCredentials: AWSServiceConnection2
-        regionName: $(awsRegion)
-        sourceImageName: $(awsRepositoryName)
-        repositoryName: $(awsECRImageURI)
-        sourceImageTag: latest
-        pushTag: latest
+        regionName: 'ap-south-1'
+        sourceImageName: whiteboard
+        repositoryName: nsl
 
 
   - job: TerraformPlan
