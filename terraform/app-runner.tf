@@ -11,7 +11,7 @@ resource "aws_apprunner_service" "apprunner" {
       }
       image_identifier = "public.ecr.aws/aws-containers/hello-app-runner:latest"
       # image_identifier      = "058264229940.dkr.ecr.ap-south-1.amazonaws.com/sahasra:latest"
-      image_repository_type = "ECR_PUBLIC" # "ECR" 
+      image_repository_type = "ECR" #"ECR_PUBLIC"
     }
     auto_deployments_enabled = false
   }

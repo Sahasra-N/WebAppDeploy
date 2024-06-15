@@ -43,8 +43,6 @@ stages:
         awsCredentials: AWSServiceConnection2
         regionName: 'ap-south-1'
         sourceImageName: whiteboard
-        c
-
 
   - job: TerraformPlan
     dependsOn: BuildAndPush
