@@ -37,6 +37,7 @@ stages:
         Dockerfile: '**/Dockerfile' 
         buildContext: $(System.DefaultWorkingDirectory)/app
         repository: $(awsECRImageURI)
+        tags: latest
 
     - task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
       displayName: 'Push Image: '
@@ -45,6 +46,8 @@ stages:
         regionName: $(awsRegion)
         sourceImageName: $(awsRepositoryName)
         repositoryName: $(awsECRImageURI)
+        sourceImageTag: latest
+        pushTag: latest
 
 
   - job: TerraformPlan
