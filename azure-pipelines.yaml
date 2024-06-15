@@ -26,6 +26,14 @@ stages:
         pip install awscli
       displayName: 'Install AWS CLI'
 
+    - task: AWSCLI@1
+      inputs:
+        awsCredentials: 'AWSServiceConnection2'  # Replace with your actual AWS service connection name
+        regionName: $(awsRegion)
+        command: 'configure'
+        arguments: '--profile default'
+      displayName: 'Configure AWS CLI'
+
     - script: |
         aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
       displayName: 'Login to AWS ECR'
