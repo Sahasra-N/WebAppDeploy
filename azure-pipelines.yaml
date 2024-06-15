@@ -31,10 +31,11 @@ stages:
       inputs:
         awsCredentials: AWSServiceConnection2
         regionName: 'ap-south-1'
-        awsCommand: aws
-        awsSubCommand: ecr
-        awsArguments: 'get-login-password --region $regionName | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com'
+        awsCommand: 'aws ecr'
+        awsSubCommand: 'get-login-password'
+        awsArguments: ' --region $regionName | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com'
         failOnStandardError: false
+
 
     # - script: |
     #     aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
