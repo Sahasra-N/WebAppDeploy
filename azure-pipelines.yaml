@@ -26,7 +26,7 @@ stages:
         pip install awscli
       displayName: 'Install AWS CLI'
 
-    - task:c
+    - task: AmazonWebServices.aws-vsts-tools.AWSCLI.AWSCLI@1
       displayName: 'AWS CLI: '
       inputs:
         awsCredentials: AWSServiceConnection2
