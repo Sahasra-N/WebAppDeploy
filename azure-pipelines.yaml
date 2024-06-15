@@ -11,7 +11,7 @@ stages:
 - stage: Terraform
   displayName: 'Terraform'
   jobs:
-  - job: BuildAndPush
+  - job: BuildAndPush    
     displayName: 'Build and Push Docker Image to AWS ECR'
     pool:
       vmImage: 'ubuntu-latest'
@@ -54,6 +54,7 @@ stages:
 
 
   - job: TerraformPlan
+  dependsOn: BuildAndPush
     displayName: 'Run Terraform'
     steps:
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
