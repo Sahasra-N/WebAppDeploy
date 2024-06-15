@@ -35,7 +35,7 @@ stages:
       inputs:        
         command: 'build'
         Dockerfile: '**/Dockerfile' 
-        buildContext: $(System.DefaultWorkingDirectory)
+        buildContext: $(System.DefaultWorkingDirectory)/app
         repository: $(awsECRImageURI)
 
     - task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
