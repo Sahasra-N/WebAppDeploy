@@ -26,20 +26,11 @@ stages:
         pip install awscli
       displayName: 'Install AWS CLI'
 
-    # - task: AmazonWebServices.aws-vsts-tools.AWSCLI.AWSCLI@1
-    #   displayName: 'AWS CLI: '
-    #   inputs:
-    #     awsCredentials: AWSServiceConnection2
-    #     regionName: 'ap-south-1'
-    #     awsCommand: ecr
-    #     awsSubCommand: 'get-login-password'
-    #     awsArguments: ' --region $awsRegion | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com'
-    #     failOnStandardError: false
 
     - script: |
         # Update the apt package index
         sudo apt-get update
-        
+
         # Install packages to allow apt to use a repository over HTTPS
         sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
@@ -68,19 +59,20 @@ stages:
         docker --version
       displayName: 'Test Docker Installation'
 
-    # Your other pipeline steps follow here
     - task: AmazonWebServices.aws-vsts-tools.AWSCLI.AWSCLI@1
-      displayName: 'AWS CLI: Get ECR login'
+      displayName: 'AWS CLI: '
       inputs:
-        awsCredentials: 'AWSServiceConnection2'
+        awsCredentials: AWSServiceConnection2
         regionName: 'ap-south-1'
-        awsCommand: 'ecr get-login-password --region $(regionName) | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$(regionName).amazonaws.com'
+        awsCommand: ecr
+        awsSubCommand: 'get-login-password'
+        awsArguments: ' --region $awsRegion | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com'
         failOnStandardError: false
 
 
-    # - script: |
-    #     aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
-    #   displayName: 'Login to AWS ECR'
+    - script: |
+        aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
+      displayName: 'Login to AWS ECR'
 
     - script: |
         cd app
