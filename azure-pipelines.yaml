@@ -26,14 +26,15 @@ stages:
         pip install awscli
       displayName: 'Install AWS CLI'
 
-    - task: AWSCLI@1
+    - task: AmazonWebServices.aws-vsts-tools.AWSCLI.AWSCLI@1
+      displayName: 'AWS CLI: '
       inputs:
-        awsCredentials: 'AWSServiceConnection2'  # Replace with your actual AWS service connection name
-        regionName: $(awsRegion)
-        scriptType: 'inline'  # Use inline script for login
-        scriptLocation: 'Inline Script'
-        inlineScript: |
-          aws ecr get-login-password --region $regionName | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com  
+        awsCredentials: AWSServiceConnection2
+        regionName: 'ap-south-1'
+        awsCommand: aws
+        awsSubCommand: ecr
+        awsArguments: 'get-login-password --region $regionName | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com'
+        failOnStandardError: false
 
     # - script: |
     #     aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
