@@ -12,9 +12,11 @@ terraform {
       version = "5.53.0"
     }
   }
+
 }
 
 provider "aws" {
   # Configuration options
   region = "ap-south-1" # Specify your AWS region
+  
 }

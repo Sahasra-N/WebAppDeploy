@@ -4,10 +4,55 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  - group: AWSVariables  # Reference the variable group
+
 stages:
 - stage: Terraform
   displayName: 'Terraform'
   jobs:
+  - job: BuildAndPush
+    displayName: 'Build and Push Docker Image to AWS ECR'
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
+
+    - script: |
+        pip install awscli
+      displayName: 'Install AWS CLI'
+
+    - task: AWSCLI@1
+      inputs:
+        awsCredentials: AWSServiceConnection2
+        regionName: $(awsRegion)
+        command: 'ecr'
+        arguments: 'get-login-password --region $(awsRegion)'
+      displayName: 'Get AWS ECR Login Password'
+      continueOnError: false
+
+    - script: |
+        aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
+      displayName: 'Login to AWS ECR'
+
+    - script: |
+        cd app
+        docker build -t $(imageName) -f $(dockerFilePath) .
+      displayName: 'Build Docker Image'
+
+    - script: |
+        docker tag $(imageName):latest $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com/$(ecrRepository):latest
+      displayName: 'Tag Docker Image'
+
+    - script: |
+        docker push $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com/$(ecrRepository):latest
+      displayName: 'Push Docker Image to AWS ECR'
+
+
   - job: TerraformPlan
     displayName: 'Run Terraform'
     steps:

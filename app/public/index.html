@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whiteboard with Sticky Notes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Whiteboard</h1>
+    </header>
+    <div class="box">
+        <div id="notes-container"></div>
+    </div>
+    <div class="sticky-note-buttons">
+        <button id="addRedNote">Red Note</button>
+        <button id="addBlueNote">Blue Note</button>
+        <button id="addGreenNote">Green Note</button>
+        <button id="addYellowNote">Yellow Note</button>
+        <button id="addPinkNote">Pink Note</button>
+        <button id="addPurpleNote">Purple Note</button>
+        <button id="deleteAllNotes">Delete All Notes</button>
+    </div>
+ 
+    <script src="https://cdn.socket.io/4.3.1/socket.io.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
