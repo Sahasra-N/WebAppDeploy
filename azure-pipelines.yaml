@@ -63,10 +63,10 @@ stages:
       displayName: 'AWS CLI: '
       inputs:
         awsCredentials: AWSServiceConnection2
-        regionName: 'ap-south-1'
+        regionName: 'us-east-1'
         awsCommand: ecr
         awsSubCommand: 'get-login-password'
-        awsArguments: ' --region $awsRegion | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com'
+        awsArguments: " --region us-east-1 | docker login --username AWS --password-stdin 058264229940.dkr.ecr.us-east-1.amazonaws.com"
         failOnStandardError: false
 
 
