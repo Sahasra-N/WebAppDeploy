@@ -26,15 +26,6 @@ stages:
         pip install awscli
       displayName: 'Install AWS CLI'
 
-    - task: AWSCLI@1
-      inputs:
-        awsCredentials: AWSServiceConnection2
-        regionName: $(awsRegion)
-        command: 'ecr'
-        arguments: 'get-login-password --region $(awsRegion)'
-      displayName: 'Get AWS ECR Login Password'
-      continueOnError: false
-
     - script: |
         aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
       displayName: 'Login to AWS ECR'
@@ -54,7 +45,7 @@ stages:
 
 
   - job: TerraformPlan
-  dependsOn: BuildAndPush
+    dependsOn: BuildAndPush
     displayName: 'Run Terraform'
     steps:
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
