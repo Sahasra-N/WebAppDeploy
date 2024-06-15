@@ -29,8 +29,6 @@ stages:
     - task: DockerInstaller@0
       displayName: 'Install Docker 17.09.0-ce'
 
-    Docker v2
-    Build or push Docker images, login or logout, start or stop containers, or run a Docker command.
     - task: Docker@2
       inputs:        
         command: 'build'
