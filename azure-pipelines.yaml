@@ -33,7 +33,7 @@ stages:
         regionName: 'ap-south-1'
         awsCommand: ecr
         awsSubCommand: 'get-login-password'
-        awsArguments: ' --region $regionName | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com'
+        awsArguments: ' --region $awsRegion | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com'
         failOnStandardError: false
 
 
