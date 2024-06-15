@@ -17,20 +17,20 @@ stages:
       vmImage: 'ubuntu-latest'
 
     steps:
-    # - task: UsePythonVersion@0
-    #   inputs:
-    #     versionSpec: '3.x'
-    #     addToPath: true
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
 
-    # - script: |
-    #     pip install awscli
-    #   displayName: 'Install AWS CLI'
+    - script: |
+        pip install awscli
+      displayName: 'Install AWS CLI'
 
-    # - task: DockerInstaller@0
-    #   displayName: 'Install Docker 17.09.0-ce'
+    - task: DockerInstaller@0
+      displayName: 'Install Docker 17.09.0-ce'
 
-    # Docker v2
-    # Build or push Docker images, login or logout, start or stop containers, or run a Docker command.
+    Docker v2
+    Build or push Docker images, login or logout, start or stop containers, or run a Docker command.
     - task: Docker@2
       inputs:        
         command: 'build'
