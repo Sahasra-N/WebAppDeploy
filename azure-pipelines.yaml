@@ -30,13 +30,14 @@ stages:
       inputs:
         awsCredentials: 'AWSServiceConnection2'  # Replace with your actual AWS service connection name
         regionName: $(awsRegion)
-        command: 'configure'
-        arguments: '--profile default'
-      displayName: 'Configure AWS CLI'
+        scriptType: 'inline'  # Use inline script for login
+        scriptLocation: 'Inline Script'
+        inlineScript: |
+          aws ecr get-login-password --region $regionName | docker login --username AWS --password-stdin $(ecrRepository).dkr.ecr.$awsRegion.amazonaws.com  
 
-    - script: |
-        aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
-      displayName: 'Login to AWS ECR'
+    # - script: |
+    #     aws ecr get-login-password --region $(awsRegion) | docker login --username AWS --password-stdin $(awsAccountId).dkr.ecr.$(awsRegion).amazonaws.com
+    #   displayName: 'Login to AWS ECR'
 
     - script: |
         cd app
