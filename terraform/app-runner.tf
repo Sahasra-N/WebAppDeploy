@@ -9,7 +9,7 @@ resource "aws_apprunner_service" "apprunner" {
       image_configuration {
         port = "8000"
       }
-      image_identifier = "public.ecr.aws/aws-containers/hello-app-runner:latest"
+      image_identifier = "058264229940.dkr.ecr.ap-south-1.amazonaws.com/whiteboard:latest"
       # image_identifier      = "058264229940.dkr.ecr.ap-south-1.amazonaws.com/sahasra:latest"
       image_repository_type = "ECR" #"ECR_PUBLIC"
     }
