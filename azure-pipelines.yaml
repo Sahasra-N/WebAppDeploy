@@ -26,6 +26,19 @@ stages:
         pip install awscli
       displayName: 'Install AWS CLI'
 
+    # Cache Docker layers
+    - task: Cache@2
+      inputs:
+        key: 'docker | "$(Build.SourcesDirectory)/app/Dockerfile" | $(Build.SourceVersion)'
+        restoreKeys: |
+          docker | "$(Build.SourcesDirectory)/app/Dockerfile"
+        path: /tmp/.docker-cache
+
+    - script: |
+        docker build --cache-from=type=local,src=/tmp/.docker-cache --tag whiteboard:latest $(System.DefaultWorkingDirectory)/app
+        docker save whiteboard:latest | gzip > /tmp/.docker-cache/whiteboard_latest.tar.gz
+      displayName: 'Build Docker Image with Cache'
+      
     - task: DockerInstaller@0
       displayName: 'Install Docker 17.09.0-ce'
 
