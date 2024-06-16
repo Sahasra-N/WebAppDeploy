@@ -1,25 +1,17 @@
 # Create an IAM role for App Runner to access the ECR repository
 resource "aws_iam_role" "access_role" {
-  # Name of the IAM role
-  name = "apprunner-access-role"
-  # Assume role policy that allows App Runner to assume this role
+  name               = "apprunner-access-role"
   assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
+    "Version": "2012-10-17",
+    "Statement": [
       {
-        "Sid" : "Statement1",
-        "Effect" : "Allow",
-        "Principal" : { "Service" : "build.apprunner.amazonaws.com"},
-        "Action" : "sts:AssumeRole"
-      },
-      {
-        "Sid" : "Statement2",
-        "Effect" : "Allow",
-        "Principal" : { "Service" : "tasks.apprunner.amazonaws.com" },
-        "Action" : "sts:AssumeRole"
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "build.apprunner.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
       }
-    ],
-    "Resource": "*"
+    ]
   })
 }
 
