@@ -32,7 +32,7 @@ stages:
       displayName: 'Terraform: plan'
       inputs:
         provider: aws
-        command: plan
+        command: plan -destroy
         environmentServiceNameAWS: AWSServiceConnection
         workingDirectory: terraform
 
