@@ -55,7 +55,7 @@ stages:
         timeout: '1d'
 
 - stage: Deploy  
-  displayName: 'Terraform'
+  displayName: 'Deploy Application'
   dependsOn: BuildAndPush
   jobs:
   - job: TerraformPlan    
