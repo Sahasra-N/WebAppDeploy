@@ -7,14 +7,13 @@ resource "aws_iam_role" "access_role" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
+        "Sid" : "Statement1",
         "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "build.apprunner.amazonaws.com"
-        },
+        "Principal" : { "Service" : "build.apprunner.amazonaws.com"},
         "Action" : "sts:AssumeRole"
       },
       {
-        "Sid" : "Statement1",
+        "Sid" : "Statement2",
         "Effect" : "Allow",
         "Principal" : { "Service" : "tasks.apprunner.amazonaws.com" },
         "Action" : "sts:AssumeRole"
@@ -41,9 +40,7 @@ resource "aws_iam_role_policy" "ecr_permissions" {
           "ecr:BatchGetImage",
           "ecr:DescribeImages",
           "ecr:GetAuthorizationToken"
-        ],
-        # The resources this policy applies to; in this case, all ECR repositories
-        "Resource" : "*"
+        ],        # The resources this policy applies to; in this case, all ECR repositories        "Resource" : "*"
       }
     ]
   })

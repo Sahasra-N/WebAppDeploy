@@ -8,71 +8,59 @@ pool:
 #   - group: AWSVariables  # Reference the variable group
 
 stages:
+# - stage: BuildAndPush
+#   displayName: 'BuildAndPush'
+#   jobs:
+#   - job: BuildAndPush    
+#     displayName: 'Build and Push Docker Image to AWS ECR'
+#     pool:
+#       vmImage: 'ubuntu-latest'
+
+#     steps:
+#     - task: UsePythonVersion@0
+#       inputs:
+#         versionSpec: '3.x'
+#         addToPath: true
+
+#     - script: |
+#         pip install awscli
+#       displayName: 'Install AWS CLI'
+
+#     - task: DockerInstaller@0
+#       displayName: 'Install Docker 17.09.0-ce'
+
+#     - task: Docker@2
+#       inputs:        
+#         command: 'build'
+#         Dockerfile: '**/Dockerfile' 
+#         buildContext: $(System.DefaultWorkingDirectory)/app
+#         repository: whiteboard
+#         tags: latest
+
+#     - task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
+#       displayName: 'Push Image: '
+#       inputs:
+#         awsCredentials: AWSServiceConnection2
+#         regionName: 'ap-south-1'
+#         sourceImageName: whiteboard
+#         repositoryName: whiteboard
+
+#   - job: ManualApprovalDeploy
+#     dependsOn: BuildAndPush
+#     displayName: 'Approval Job to continue with deployment'    
+#     pool: server
+#     steps:
+#     - task: manualvalidation@0
+#       inputs:
+#         # notifyUsers: 'user@example.com'
+#         instructions: 'Please approve to continue with Deployment...'
+#         onTimeout: 'reject'
+#         timeout: '1d'
+
 - stage: Terraform
   displayName: 'Terraform'
   jobs:
-  - job: BuildAndPush    
-    displayName: 'Build and Push Docker Image to AWS ECR'
-    pool:
-      vmImage: 'ubuntu-latest'
-
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.x'
-        addToPath: true
-
-    - script: |
-        pip install awscli
-      displayName: 'Install AWS CLI'
-
-    # Cache Docker layers
-    - task: Cache@2
-      inputs:
-        key: 'docker | "$(Build.SourcesDirectory)/app/Dockerfile" | $(Build.SourceVersion)'
-        restoreKeys: |
-          docker | "$(Build.SourcesDirectory)/app/Dockerfile"
-        path: /tmp/.docker-cache
-
-    - script: |
-        docker build --cache-from=type=local,src=/tmp/.docker-cache --tag whiteboard:latest $(System.DefaultWorkingDirectory)/app
-        docker save whiteboard:latest | gzip > /tmp/.docker-cache/whiteboard_latest.tar.gz
-      displayName: 'Build Docker Image with Cache'
-      
-    - task: DockerInstaller@0
-      displayName: 'Install Docker 17.09.0-ce'
-
-    - task: Docker@2
-      inputs:        
-        command: 'build'
-        Dockerfile: '**/Dockerfile' 
-        buildContext: $(System.DefaultWorkingDirectory)/app
-        repository: whiteboard
-        tags: latest
-
-    - task: AmazonWebServices.aws-vsts-tools.ECRPushImage.ECRPushImage@1
-      displayName: 'Push Image: '
-      inputs:
-        awsCredentials: AWSServiceConnection2
-        regionName: 'ap-south-1'
-        sourceImageName: whiteboard
-        repositoryName: whiteboard
-
-  - job: ManualApprovalDeploy
-    dependsOn: BuildAndPush
-    displayName: 'Approval Job to continue with deployment'    
-    pool: server
-    steps:
-    - task: manualvalidation@0
-      inputs:
-        # notifyUsers: 'user@example.com'
-        instructions: 'Please approve to continue with Deployment...'
-        onTimeout: 'reject'
-        timeout: '1d'
-
-
-  - job: TerraformPlan
-    dependsOn: ManualApprovalDeploy
+  - job: TerraformPlan    
     displayName: 'Run Terraform'
     steps:
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
@@ -83,7 +71,6 @@ stages:
     - script: |
         terraform --version
       displayName: 'Check Terraform version'
-
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
       displayName: 'Terraform: init'
@@ -102,7 +89,6 @@ stages:
         environmentServiceNameAWS: AWSServiceConnection
         workingDirectory: terraform
 
-
   - job: ManualApprovalTerraform
     dependsOn: TerraformPlan
     displayName: 'Approval Job to proceed with terraform apply'    
@@ -114,7 +100,6 @@ stages:
         instructions: 'Please review the Terraform plan and approve to proceed with apply.'
         onTimeout: 'reject'
         timeout: '1d'
-
 
   - job: TerraformApply
     displayName: 'Run Terraform'
@@ -128,7 +113,6 @@ stages:
     - script: |
         terraform --version
       displayName: 'Check Terraform version'
-
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
       displayName: 'Terraform: init'
