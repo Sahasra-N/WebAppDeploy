@@ -18,7 +18,8 @@ resource "aws_iam_role" "access_role" {
         "Principal" : { "Service" : "tasks.apprunner.amazonaws.com" },
         "Action" : "sts:AssumeRole"
       }
-    ]
+    ],
+    "Resource": "*"
   })
 }
 
