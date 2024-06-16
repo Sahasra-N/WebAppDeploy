@@ -78,7 +78,7 @@ stages:
         workingDirectory: terraform
 
 
-  - job: ManualApprova
+  - job: ManualApproval
     dependsOn: TerraformPlan
     displayName: 'Approval Job'
     
