@@ -46,7 +46,11 @@ resource "aws_iam_role_policy" "ecr_permissions" {
     ]
   })
 }
-
+resource "null_resource" "wait_for_resources" {
+  provisioner "local-exec" {
+    command = "sleep 30" # Sleep for 30 seconds
+  }
+}
 
 # Create an AWS App Runner service
 resource "aws_apprunner_service" "apprunner" {
@@ -77,4 +81,6 @@ resource "aws_apprunner_service" "apprunner" {
   tags = {
     Name = "apprunner-service"
   }
+  # Ensure App Runner depends on the null resource
+  depends_on = [null_resource.wait_for_resources]
 }
