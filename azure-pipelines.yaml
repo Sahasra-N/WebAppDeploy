@@ -47,8 +47,7 @@ stages:
 
   - job: ManualApprovalDeploy
     dependsOn: BuildAndPush
-    displayName: 'Approval Job'
-    
+    displayName: 'Approval Job to continue with deployment'    
     pool: server
     steps:
     - task: manualvalidation@0
@@ -93,7 +92,7 @@ stages:
 
   - job: ManualApprovalTerraform
     dependsOn: TerraformPlan
-    displayName: 'Approval Job'    
+    displayName: 'Approval Job to proceed with terraform apply'    
     pool: server
     steps:
     - task: manualvalidation@0
