@@ -45,6 +45,19 @@ stages:
         sourceImageName: whiteboard
         repositoryName: whiteboard
 
+  - job: ManualApproval
+    dependsOn: BuildAndPush
+    displayName: 'Approval Job'
+    
+    pool: server
+    steps:
+    - task: manualvalidation@0
+      inputs:
+        # notifyUsers: 'user@example.com'
+        instructions: 'Please approve to continue with Deployment...'
+        onTimeout: 'reject'
+        timeout: '1d'
+
 
   - job: TerraformPlan
     dependsOn: BuildAndPush

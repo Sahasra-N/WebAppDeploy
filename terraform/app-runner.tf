@@ -1,34 +1,3 @@
-# Create an AWS App Runner service
-resource "aws_apprunner_service" "apprunner" {
-  # The name of the App Runner service
-  service_name = "apprunner"
-
-  source_configuration {
-    # Configuration for the authentication needed to access the ECR repository
-    authentication_configuration {
-      access_role_arn = aws_iam_role.access_role.arn
-    }
-    # Configuration for the image repository where the container image is stored
-    image_repository {
-      image_configuration {
-        # Port on which the application listens
-        port = "3000"
-      }
-      # The identifier for the image in ECR
-      image_identifier      = "058264229940.dkr.ecr.ap-south-1.amazonaws.com/whiteboard:latest"
-      # Type of the image repository; change to "ECR_PUBLIC" if the image is in a public repository
-      image_repository_type = "ECR"
-    }
-    # Whether auto deployments are enabled for the source repository
-    auto_deployments_enabled = false
-  }
-
-  # Tags to apply to the App Runner service
-  tags = {
-    Name = "apprunner-service"
-  }
-}
-
 # Create an IAM role for App Runner to access the ECR repository
 resource "aws_iam_role" "access_role" {
   # Name of the IAM role
@@ -72,4 +41,36 @@ resource "aws_iam_role_policy" "ecr_permissions" {
       }
     ]
   })
+}
+
+
+# Create an AWS App Runner service
+resource "aws_apprunner_service" "apprunner" {
+  # The name of the App Runner service
+  service_name = "apprunner"
+
+  source_configuration {
+    # Configuration for the authentication needed to access the ECR repository
+    authentication_configuration {
+      access_role_arn = aws_iam_role.access_role.arn
+    }
+    # Configuration for the image repository where the container image is stored
+    image_repository {
+      image_configuration {
+        # Port on which the application listens
+        port = "3000"
+      }
+      # The identifier for the image in ECR
+      image_identifier      = "058264229940.dkr.ecr.ap-south-1.amazonaws.com/whiteboard:latest"
+      # Type of the image repository; change to "ECR_PUBLIC" if the image is in a public repository
+      image_repository_type = "ECR"
+    }
+    # Whether auto deployments are enabled for the source repository
+    auto_deployments_enabled = false
+  }
+
+  # Tags to apply to the App Runner service
+  tags = {
+    Name = "apprunner-service"
+  }
 }
