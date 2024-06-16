@@ -45,7 +45,7 @@ stages:
         sourceImageName: whiteboard
         repositoryName: whiteboard
 
-  - job: ManualApproval
+  - job: ManualApprovalDeploy
     dependsOn: BuildAndPush
     displayName: 'Approval Job'
     
@@ -60,7 +60,7 @@ stages:
 
 
   - job: TerraformPlan
-    dependsOn: BuildAndPush
+    dependsOn: ManualApprovalDeploy
     displayName: 'Run Terraform'
     steps:
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
@@ -91,10 +91,9 @@ stages:
         workingDirectory: terraform
 
 
-  - job: ManualApproval
+  - job: ManualApprovalTerraform
     dependsOn: TerraformPlan
-    displayName: 'Approval Job'
-    
+    displayName: 'Approval Job'    
     pool: server
     steps:
     - task: manualvalidation@0
@@ -107,7 +106,7 @@ stages:
 
   - job: TerraformApply
     displayName: 'Run Terraform'
-    dependsOn: ManualApproval
+    dependsOn: ManualApprovalTerraform
     steps:
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
       displayName: 'Install Terraform 1.8.5'
