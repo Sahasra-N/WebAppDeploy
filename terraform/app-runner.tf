@@ -4,14 +4,20 @@ resource "aws_iam_role" "access_role" {
   name = "apprunner-access-role"
   # Assume role policy that allows App Runner to assume this role
   assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Principal": {
-          "Service": "build.apprunner.amazonaws.com"
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "build.apprunner.amazonaws.com"
         },
-        "Action": "sts:AssumeRole"
+        "Action" : "sts:AssumeRole"
+      },
+      {
+        "Sid" : "Statement1",
+        "Effect" : "Allow",
+        "Principal" : { "Service" : "tasks.apprunner.amazonaws.com" },
+        "Action" : "sts:AssumeRole"
       }
     ]
   })
@@ -25,11 +31,11 @@ resource "aws_iam_role_policy" "ecr_permissions" {
   role = aws_iam_role.access_role.id
   # The policy document that defines the permissions
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchCheckLayerAvailability",
           "ecr:BatchGetImage",
@@ -37,7 +43,7 @@ resource "aws_iam_role_policy" "ecr_permissions" {
           "ecr:GetAuthorizationToken"
         ],
         # The resources this policy applies to; in this case, all ECR repositories
-        "Resource": "*"
+        "Resource" : "*"
       }
     ]
   })
@@ -61,7 +67,7 @@ resource "aws_apprunner_service" "apprunner" {
         port = "3000"
       }
       # The identifier for the image in ECR
-      image_identifier      = "058264229940.dkr.ecr.ap-south-1.amazonaws.com/whiteboard:latest"
+      image_identifier = "058264229940.dkr.ecr.ap-south-1.amazonaws.com/whiteboard:latest"
       # Type of the image repository; change to "ECR_PUBLIC" if the image is in a public repository
       image_repository_type = "ECR"
     }
