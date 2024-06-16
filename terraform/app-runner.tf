@@ -43,7 +43,7 @@ resource "aws_iam_role_policy" "ecr_permissions" {
 
 resource "null_resource" "wait_for_resources" {
   provisioner "local-exec" {
-    command = "sleep 30" # Sleep for 30 seconds
+    command = "sleep 30" # Sleep for 30 seconds # https://github.com/pulumi/pulumi-aws/issues/1697
   }
 }
 
