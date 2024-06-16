@@ -61,7 +61,7 @@ stages:
 
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
-      displayName: 'Terraform : aws init'
+      displayName: 'Terraform: init'
       inputs:
         provider: aws
         backendServiceAWS: AWSServiceConnection
@@ -70,7 +70,7 @@ stages:
         workingDirectory: terraform
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
-      displayName: 'Terraform : plan'
+      displayName: 'Terraform: plan'
       inputs:
         provider: aws
         command: plan
@@ -78,7 +78,7 @@ stages:
         workingDirectory: terraform
 
 
-  - job: ManualApproval
+  - job: ManualApprova
     dependsOn: TerraformPlan
     displayName: 'Approval Job'
     
@@ -107,7 +107,7 @@ stages:
 
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
-      displayName: 'Terraform : aws init'
+      displayName: 'Terraform: init'
       inputs:
         provider: aws
         backendServiceAWS: AWSServiceConnection
@@ -116,7 +116,7 @@ stages:
         workingDirectory: terraform
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
-      displayName: 'Terraform : apply'
+      displayName: 'Terraform: apply'
       inputs:
         provider: aws
         command: apply
