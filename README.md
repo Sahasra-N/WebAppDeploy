@@ -9,7 +9,9 @@ Before you begin, ensure you have the following installed:
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [Azure DevOps CLI](https://docs.microsoft.com/en-us/azure/devops/cli/?view=azure-devops)
 - [Docker](https://www.docker.com/get-started)
-
+- Create S3 and ECR 
+- S3 for terraform state
+- ECR to store container images
 ## Setup Instructions
 
 ### 1. Clone the Repository
